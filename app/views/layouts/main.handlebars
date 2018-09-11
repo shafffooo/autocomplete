@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Autocomplete</title>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+            
+            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+            <script src="https://fastcdn.org/Underscore.js/1.8.3/underscore-min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.js"></script>
+        <script>
+            $(document).ready(function(){
+                $(".typeahead").typeahead({
+                    source: _.debounce(function(query, process){
+                        var url = "/suggest?term=" + query;
+                        return $.get(url, function(terms){
+                            // data is the raw response from the API
+                            console.log(terms);
+                            //return data;
+                            $("#suggestions").empty();
+                            terms.forEach(function(term) {
+                                var li = document.createElement("li");
+                                li.appendChild(document.createTextNode(term));
+                                $('#suggestions').append(li);
+                            });
+                        });
+                    }, 100),
+                    matcher: function(item){
+                        // needed in order to allow typos
+                        return true;
+                    },
+                    items: 10,
+                    minLength: 1
+                });
+                $(".typeahead").keyup(function() {
+                    if (!this.value) {
+                        $("#suggestions").empty();
+                    }
+                });
+            });
+
+        </script>
+    </head>
+    <body>
+        {{{body}}}
+    </body>
+</html>

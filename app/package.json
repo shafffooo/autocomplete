@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is an express server to handle requests to Apache Solr",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon server.js"
+  },
+  "author": "Shafiq Rahman",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.0.0",
+    "handlebars": "^4.0.12",
+    "https": "^1.0.0",
+    "solr-node": "^1.0.14"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
+  }
+}

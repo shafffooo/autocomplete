@@ -1,0 +1,34 @@
+version: '3.5'
+
+# SOLR default port: 8983
+
+services:
+  solr:
+    image: solr:7.4.0-alpine
+    container_name: solr
+    ports:
+      - "8983:8983"
+    volumes:
+      - type: bind
+        source: ./solr/conf
+        target: /opt/dictionary/conf
+#      - type: volume
+#        source: solr
+#        target: /opt/solr/server/solr/mycores
+    networks:
+      - solrnet
+    entrypoint:
+      - docker-entrypoint.sh
+      - solr-precreate
+      - dictionary
+      - /opt/dictionary
+
+# create a solr network
+networks:
+  solrnet:
+    name: solrnet
+
+# create a solr volume
+#volumes:
+#  solr:
+
