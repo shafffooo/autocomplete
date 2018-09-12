@@ -1,13 +1,26 @@
 const http = require("http")
+var logger = require('winston'); 
 
-module.exports = function(app, db) {
+module.exports = function(app) {
+
+    /**
+     *  return HTML search page when user visits root 
+     */
     app.get('/', (req, res) => {
-        res.render('home');
+        res.render('search');
     });
 
+    /**
+     * make a request to Solr suggest handler for given term
+     */
     app.get('/suggest', (req, res) => {
+
+        // get query parameters
         let term = req.query.term;
 
+        logger.info("Received request for '" + term + "' suggetions");
+
+        // HTTP request to Solr suggest handler
         http.get({
             host: 'localhost',
             port: 8983,

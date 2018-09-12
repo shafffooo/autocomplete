@@ -1,26 +1,24 @@
-const express    = require("express");
+const config = require("config")
+const express = require("express");
 const expressHandleBars = require("express-handlebars");
 const path = require('path');
-const bodyParser = require("body-parser")
+const logger = require("./logger");
 
+// create express app
 const app = express();
-
-// Get url parameters
-app.use(bodyParser.urlencoded({extended: true}));
 
 // Set views
 app.set('views', path.join(__dirname, 'views'));
-app.engine('handlebars', expressHandleBars({defaultLayout: 'main'}));
+app.engine('handlebars', expressHandleBars({defaultLayout: 'index'}));
 app.set('view engine', 'handlebars');
 
-const listen_port = 8000;
-
 // register routes
-require('./app/routes')(app, {});
+require('./app/routes')(app);
 
 // start server
-app.listen(listen_port, function(){
-    console.log("Express is listening at port: " + listen_port)
+const server_port = config.get("app.port");
+app.listen(server_port, function(){
+    logger.info("Express is listening at port: " + server_port);
 });
 
 

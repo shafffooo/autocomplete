@@ -1,0 +1,11 @@
+{
+    "solr" : {
+        "host" : "localhost",
+        "port" : 8983,
+        "core" : "dictionary",
+        "suggester" : "words_suggester"
+    },
+    "app" : {
+        "port": 8000
+    }
+}
