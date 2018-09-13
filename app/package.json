@@ -2,7 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "This is an express server to handle requests to Apache Solr",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "./node_modules/.bin/nodemon server.js",
     "prod": "node server.js"

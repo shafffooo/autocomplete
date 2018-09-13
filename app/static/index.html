@@ -13,7 +13,7 @@
             $(document).ready(function(){
                 $(".typeahead").typeahead({
                     source: _.debounce(function(query, process){
-                        var url = "/suggest?term=" + query;
+                        var url = "/api/suggest?term=" + query;
                         return $.get(url, function(terms){
                             // data is the raw response from the API
                             console.log(terms);
@@ -47,6 +47,10 @@
         </script>
     </head>
     <body>
-        {{{body}}}
+        <h4>Please enter the search term</h4>
+        <div id="search">
+            <input class="typeahead" type="text" placeholder="Search word" autocomplete="off">
+            <ul id="suggestions" style="list-style: none; padding: 5px;"></ul>
+        </div>
     </body>
 </html>
