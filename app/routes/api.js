@@ -1,11 +1,14 @@
 /**
  * This file contains the routes to APIs
  */
-const http = require("http")
+
 var logger = require('winston'); 
-const lib = require('../lib');
+const suggest = require('../lib/solr/suggest');
 
 module.exports = function(app, solr_config) {
+
+    const {host, port, core, suggester} = solr_config;
+    this.solrSuggester = suggest(host, port, core, suggester);
 
     /**
      * make a request to Apache Solr suggest handler for requested term
@@ -28,29 +31,10 @@ module.exports = function(app, solr_config) {
             logger.info("Received request for '" + term + "' suggetions");
 
             // HTTP request to Solr suggest handler
-            http.get({
-                host: 'localhost',
-                port: 8983,
-                path:'/solr/dictionary/suggest?suggest.q=' + term
-            }, 
-            response => {
-                let body = "";
-                response.on('data', data => {
-                    body += data;
-                });
-                response.on('end', () => {
-                    let result = JSON.parse(body);
-    
-                    let terms = result
-                        .suggest
-                        .words_suggester[term]
-                        .suggestions
-                        .map(t => t.term);
-    
+            this.solrSuggester.suggestWordsForTerm(term)
+                .then(function(terms){
                     res.send(terms);
                 });
-            });
         }
-
     });
 }
