@@ -32,8 +32,8 @@ module.exports = function(app, solr_config) {
 
             // HTTP request to Solr suggest handler
             this.solrSuggester.suggestWordsForTerm(term)
-                .then(function(terms){
-                    res.send(terms);
+                .then(function(response){
+                    res.send(response);
                 });
         }
     });

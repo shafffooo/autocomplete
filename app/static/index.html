@@ -14,10 +14,19 @@
                 $(".typeahead").typeahead({
                     source: _.debounce(function(query, process){
                         var url = "/api/suggest?term=" + query;
-                        return $.get(url, function(terms){
+                        return $.get(url, function(response){
+
+                            var terms = response.terms;
+                            var queryTime = response.time;
+
                             // data is the raw response from the API
                             console.log(terms);
-                            //return data;
+                            
+                            // populate query time
+                            $('#qtime').show();
+                            $('#qtime').text( queryTime + " ms");
+
+                            // populate unordered list with terms
                             $("#suggestions").empty();
                             terms.forEach(function(term) {
                                 var li = document.createElement("li");
@@ -40,6 +49,8 @@
                 $(".typeahead").keyup(function() {
                     if (!this.value) {
                         $("#suggestions").empty();
+                        $('#qtime').text( "" );
+                        $('#qtime').hide();
                     }
                 });
             });
@@ -50,6 +61,7 @@
         <h4>Please enter the search term</h4>
         <div id="search">
             <input class="typeahead" type="text" placeholder="Search word" autocomplete="off">
+            <label id="qtime" style="border:1px solid lightgrey;padding: 0 5px 2px 0;display:none;"></label>
             <ul id="suggestions" style="list-style: none; padding: 5px;"></ul>
         </div>
     </body>

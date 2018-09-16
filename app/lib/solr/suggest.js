@@ -35,10 +35,16 @@ module.exports = function(host, port, core, suggester=None){
         return requestPromise(urlOptions)
             .then(function (response) {
                 
-                return response
+                var terms = response
                     .suggest[suggester][term]
                     .suggestions
                     .map(t => t.term);
+                var time = response.responseHeader.QTime;
+
+                return {
+                    terms: terms,
+                    time: time
+                }
             })
             .catch(function (err) {
                 console.log("Something went wrong");
